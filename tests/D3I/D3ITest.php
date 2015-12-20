@@ -127,4 +127,22 @@ class D3ITest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals('test', $d3i['@test.settings']);
 	}
+
+	public function testProtectedService() {
+		$d3i = new Container();
+		$d3i->test = Provider::Create(function(Container $c) {
+			$service = new Service();
+			$service->settings = 'test';
+			return $service;
+		})->protect();
+
+		$this->assertInstanceOf('Webapper\D3I\Provider', $d3i['test']);
+		$this->assertInstanceOf('Webapper\D3I\Tests\Service', $d3i->test);
+
+		$service1 = $d3i->test;
+		$service2 = $d3i->test;
+		$this->assertNotSame($service1, $service2);
+
+		$this->assertEquals('test', $service1->settings);
+	}
 }

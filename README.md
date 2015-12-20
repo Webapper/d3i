@@ -28,7 +28,7 @@ Sharing a service:
 ```php
 $provider->share();
 ```
-Protecting a service:
+Protecting a service will always returning a new instance of a service when getting from container:
 ```php
 $provider->protect();
 ```

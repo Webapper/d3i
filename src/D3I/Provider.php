@@ -124,7 +124,8 @@ class Provider
 	public function protect()
 	{
 		$this->injector = function ($c) {
-			return $this->service;
+			$service = $this->service;
+			return $service($c);
 		};
 		return $this;
 	}
