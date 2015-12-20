@@ -44,7 +44,7 @@ $extendedProvider = $provider->extend(function(Container $c, $p) {
 ```
 ...or using a provider extension:
 ```php
-$container['my_extension'] = Provider::Create(function(Container $c, $p=null) {
+$container->my_extension = Provider::Create(function(Container $c, $p=null) {
 	// checking whether if extending a service or not:
 	if ($p === null) return new Service(); // returning a simple service rather than extending it
 
