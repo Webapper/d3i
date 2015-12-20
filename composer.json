@@ -1,0 +1,25 @@
+{
+    "name": "webapper/d3i",
+    "type": "library",
+    "description": "D3I (Dynamic Decorator Dependency Injection) is a replacement of Pimple",
+    "keywords": ["dependency injection", "container"],
+    "homepage": "https://github.com/Webapper/silex-d3i",
+    "license": "WTFPL",
+    "authors": [
+        {
+            "name": "Csaba Dobai (Assarte)",
+            "email": "be.creative@webapper.hu"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-4": { "Webapper\\D3I": "src/D3I" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
