@@ -80,20 +80,21 @@ class QueryParser {
 						break;
 					}
 					case static::TYPE_ACCESS: {
-						if ($realKey{0} !== '@' and $realKey{0} !== '!' and $this->object->offsetExists($realKey)) {
+						if ($key{0} !== '@' and $key{0} !== '!' and $this->object->offsetExists($realKey)) {
 							$result =& $this->object->offsetGet($realKey);
 							break;
 						}
 					}
 					case static::TYPE_OBJECT: {
 						if ($key{0} === '@') {
-							$call = $this->object->$realKey;
-							if (!($this->object instanceof Provider)) throw new \RuntimeException('"'.$key.'" is not a Provider. Using "@" (service-getter) prefix only allowed on Provider item.');
+							$call = $this->object[$realKey];
+							if (!($call instanceof Provider)) throw new \RuntimeException('"'.$key.'" is not a Provider. Using "@" (service-getter) prefix only allowed on Provider item.');
 							$result = $call($this->object);
 						} else if ($key{0} == '!') {
-							if (!($this->object instanceof Provider)) throw new \RuntimeException('"'.$key.'" is not a Provider. Using "!" (mutation-getter) prefix only allowed on Provider item.');
-							if (!$this->object->isMutated()) throw new \RuntimeException('Provider "'.$key.'" is not mutated.');
-							$result =& $this->object->getMutatedItem();
+							$call = $this->object[$realKey];
+							if (!($call instanceof Provider)) throw new \RuntimeException('"'.$key.'" is not a Provider. Using "!" (mutation-getter) prefix only allowed on Provider item.');
+							if (!$call->isMutated()) throw new \RuntimeException('Provider "'.$key.'" is not mutated.');
+							$result =& $call->getMutatedItem();
 						} else {
 							$result =& $this->object->$realKey;
 						}
@@ -131,20 +132,21 @@ class QueryParser {
 						break;
 					}
 					case static::TYPE_ACCESS: {
-						if ($realKey{0} !== '@' and $realKey{0} !== '!' and $this->object->offsetExists($realKey)) {
+						if ($key{0} !== '@' and $key{0} !== '!' and $this->object->offsetExists($realKey)) {
 							$result =& $this->object->offsetGet($realKey);
 							break;
 						}
 					}
 					case static::TYPE_OBJECT: {
 						if ($key{0} === '@') {
-							$call = $this->object->$realKey;
-							if (!($this->object instanceof Provider)) throw new \RuntimeException('"'.$key.'" is not a Provider. Using "@" (service-getter) prefix only allowed on Provider item.');
+							$call = $this->object[$realKey];
+							if (!($call instanceof Provider)) throw new \RuntimeException('"'.$key.'" is not a Provider. Using "@" (service-getter) prefix only allowed on Provider item.');
 							$result = $call($this->object);
 						} else if ($key{0} == '!') {
-							if (!($this->object instanceof Provider)) throw new \RuntimeException('"'.$key.'" is not a Provider. Using "!" (mutation-getter) prefix only allowed on Provider item.');
-							if (!$this->object->isMutated()) throw new \RuntimeException('Provider "'.$key.'" is not mutated.');
-							$result =& $this->object->getMutatedItem();
+							$call = $this->object[$realKey];
+							if (!($call instanceof Provider)) throw new \RuntimeException('"'.$key.'" is not a Provider. Using "!" (mutation-getter) prefix only allowed on Provider item.');
+							if (!$call->isMutated()) throw new \RuntimeException('Provider "'.$key.'" is not mutated.');
+							$result =& $call->getMutatedItem();
 						} else {
 							$result =& $this->object->$realKey;
 						}

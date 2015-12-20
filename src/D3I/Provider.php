@@ -162,8 +162,8 @@ class Provider
 	 * @param mixed $item
 	 * @return $this
 	 */
-	public function mutate(&$item) {
-		$this->mutated =& $item;
+	public function mutate($item) {
+		$this->mutated = $item;
 		$this->isMutated = true;
 		return $this;
 	}
