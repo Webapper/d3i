@@ -9,8 +9,7 @@
 namespace Webapper\D3I;
 
 
-use Webapper\Container;
-use Webapper\D3I;
+use Webapper\D3I\Container;
 
 /**
  * Class Provider
