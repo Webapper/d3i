@@ -111,7 +111,8 @@ class Container extends \ArrayObject
 	 */
 	public function &offsetGet($attr) {
 		if ($this->offsetExists($attr)) {
-			return parent::offsetGet($attr);
+			$result =& parent::offsetGet($attr);
+			return $result;
 		}
 
 		$result =& $this->queryParser->find($attr);
