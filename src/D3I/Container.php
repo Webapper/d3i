@@ -6,7 +6,7 @@
  * Time: 14:12
  */
 
-namespace Webapper;
+namespace Webapper\D3I;
 
 use Webapper\D3I\Provider;
 use Webapper\D3I\QueryParser;
