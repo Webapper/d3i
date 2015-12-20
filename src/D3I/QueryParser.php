@@ -81,7 +81,7 @@ class QueryParser {
 					}
 					case static::TYPE_ACCESS: {
 						if ($realKey{0} !== '@' and $realKey{0} !== '!' and $this->object->offsetExists($realKey)) {
-							$result =& $this->object[$realKey];
+							$result =& $this->object->offsetGet($realKey);
 							break;
 						}
 					}
@@ -132,7 +132,7 @@ class QueryParser {
 					}
 					case static::TYPE_ACCESS: {
 						if ($realKey{0} !== '@' and $realKey{0} !== '!' and $this->object->offsetExists($realKey)) {
-							$result =& $this->object[$realKey];
+							$result =& $this->object->offsetGet($realKey);
 							break;
 						}
 					}

@@ -63,14 +63,16 @@ class Container extends \ArrayObject
 	 */
 	public function &__get($attr) {
 		/** @var $service Provider|mixed */
-		$service =& $this[$attr];
+		$service =& $this->offsetGet($attr);
 		if ($service === null) throw new \InvalidArgumentException('Service "'.$attr.'" is not exists');
 
 		if (is_object($service) and $service instanceof Provider) {
-			return $service($this);
+			$result = $service($this);
 		} else {
-			return $service;
+			$result = $service;
 		}
+
+		return $result;
 	}
 
 	/**
