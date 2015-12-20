@@ -79,7 +79,7 @@ $container = Container::Create([
 ]);
 
 class MyService {
-	protected $settings;
+	public $settings;
 	function __construct($settings) {
 		$this->settings = $settings;
 	}
