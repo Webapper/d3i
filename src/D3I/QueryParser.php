@@ -170,11 +170,13 @@ class QueryParser {
 	public function &parent($query) {
 		if (empty($query)) throw new \InvalidArgumentException('Argument 1 should not be empty.');
 
-		$re = '#^(.*)[\.\#]#';
+		$re = '#^([\.\#\@\!]?.+)[\.\#\@\!]#';
 		$result = null;
 		$match = null;
 		if (preg_match($re, $query, $match)) {
 			$result =& $this->find($match[1]);
+		} else {
+			$result =& $this->object;
 		}
 		return $result;
 	}
@@ -184,7 +186,7 @@ class QueryParser {
 	}
 
 	protected function shiftKey(&$key) {
-		$re = '#^([\.\#]?[^\.\#]+?)(([\.\#]|$).*)$#';
+		$re = '#^([\.\#\@\!]?[^\.\#\@\!]+?)(([\.\#\@\!]|$).*)$#';
 		$matches = null;
 		if (preg_match($re, $key, $matches)) {
 			$key = $matches[2];
@@ -196,7 +198,7 @@ class QueryParser {
 	}
 
 	protected function parseKey($key) {
-		$key = ltrim($key, '.@');
+		$key = ltrim($key, '.@!');
 		if ($key{0} == '#') return (int)substr($key, 1);
 		return $key;
 	}

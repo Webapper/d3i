@@ -80,7 +80,7 @@ class Container extends \ArrayObject
 	 */
 	public function offsetSet($attr, $value) {
 		$parent =& $this->queryParser->parent($attr);
-		if ($parent === null or $this->offsetExists($attr)) {
+		if ($parent === $this or $parent === null or $this->offsetExists($attr)) {
 			parent::offsetSet($attr, $value);
 			return;
 		}
@@ -89,7 +89,7 @@ class Container extends \ArrayObject
 			$old =& $this->queryParser->find($attr);
 			$old = $value;
 		} else {
-			if ($parent === null) throw new \RuntimeException('Unable to determine parent of '.$attr.' for change its value.');
+			if ($parent === null and strlen(str_replace(array('.','#','!','@'), '', ltrim($attr, '.#!@'))) != strlen(ltrim($attr, '.#!@'))) throw new \RuntimeException('Unable to determine parent of '.$attr.' for change its value.');
 			$qp = new QueryParser($parent);
 			switch ($qp->getType()) {
 				case QueryParser::TYPE_ARRAY:
