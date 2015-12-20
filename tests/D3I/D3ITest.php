@@ -145,4 +145,75 @@ class D3ITest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals('test', $service1->settings);
 	}
+
+	public function testExtendedService() {
+		$d3i = new Container();
+		$d3i->test = Provider::Create(function(Container $c) {
+			$service = new Service();
+			$service->settings = 'test';
+			return $service;
+		})->share();
+
+		$this->assertInstanceOf('Webapper\D3I\Provider', $d3i['test']);
+		$this->assertInstanceOf('Webapper\D3I\Tests\Service', $d3i->test);
+
+		$service1 = $d3i->test;
+		$service2 = $d3i->test;
+		$this->assertSame($service1, $service2);
+
+		$this->assertEquals('test', $service1->settings);
+
+		$d3i->test = $d3i['test']->extend(function(Container $c, $s) {
+			$s->settings = 'extended';
+			return $s;
+		});
+
+		$this->assertInstanceOf('Webapper\D3I\Provider', $d3i['test']);
+		$this->assertInstanceOf('Webapper\D3I\Tests\Service', $d3i->test);
+
+		$service1 = $d3i->test;
+		$service2 = $d3i->test;
+		$this->assertSame($service1, $service2);
+
+		$this->assertEquals('extended', $service1->settings);
+	}
+
+	public function testExtendedServiceExtension() {
+		$d3i = new Container();
+		$d3i->extension = Provider::Create(function(Container $c, $s=null) {
+			if ($s === null) {
+				$service = new Service();
+				$service->settings = 'test';
+				return $service;
+			}
+
+			$s->settings = 'extended';
+			return $s;
+		})->share();
+
+		$this->assertInstanceOf('Webapper\D3I\Provider', $d3i['extension']);
+		$this->assertInstanceOf('Webapper\D3I\Tests\Service', $d3i->extension);
+
+		$service1 = $d3i->extension;
+		$service2 = $d3i->extension;
+		$this->assertSame($service1, $service2);
+
+		$this->assertEquals('test', $service1->settings);
+
+		$d3i->test = Provider::Create(function(Container $c) {
+			$service = new Service();
+			$service->settings = 'test';
+			return $service;
+		})->share();
+		$d3i->test = $d3i['test']->extend($d3i['extension']);
+
+		$this->assertInstanceOf('Webapper\D3I\Provider', $d3i['test']);
+		$this->assertInstanceOf('Webapper\D3I\Tests\Service', $d3i->test);
+
+		$service1 = $d3i->test;
+		$service2 = $d3i->test;
+		$this->assertSame($service1, $service2);
+
+		$this->assertEquals('extended', $service1->settings);
+	}
 }

@@ -103,12 +103,16 @@ class Provider
 	 */
 	public function share()
 	{
-		$this->injector = function ($c) {
+		$this->injector = function ($c, $ext=null) {
 			static $object;
 
-			if ($object === null) {
-				$service = $this->service;
-				$object = $service($c);
+			$service = $this->service;
+			if ($ext === null) {
+				if ($object === null) {
+					$object = $service($c);
+				}
+			} else {
+				return $service($c, $ext);
 			}
 
 			return $object;
@@ -123,8 +127,9 @@ class Provider
 	 */
 	public function protect()
 	{
-		$this->injector = function ($c) {
+		$this->injector = function ($c, $ext=null) {
 			$service = $this->service;
+			if ($ext !== null) return $service($c, $ext);
 			return $service($c);
 		};
 		return $this;
@@ -144,12 +149,16 @@ class Provider
 		$source = $this->service;
 		$this->service = $this->castToClosure($service);
 
-		$this->injector = function($c) use ($source) {
+		$this->injector = function($c, $ext=null) use ($source) {
 			static $object;
 
 			if ($object === null) {
 				$service = $this->service;
-				$object = $service($c, $source($c));
+				if ($ext === null) {
+					$object = $service($c, $source($c));
+				} else {
+					$object = $service($c, $ext);
+				}
 			}
 
 			return $object;

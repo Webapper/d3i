@@ -34,25 +34,25 @@ $provider->protect();
 ```
 Extending a service:
 ```php
-$extendedProvider = $provider->extend(function(Container $c, $p) {
+$extendedProvider = $provider->extend(function(Container $c, $s) {
 	// ...using of parent container
 	$foo = $c['foo'] + 1;
 	// ...using of parent service
-	$p->setFoo($foo);
-	return $p;
+	$s->setFoo($foo);
+	return $s;
 });
 ```
 ...or using a provider extension:
 ```php
-$container->my_extension = Provider::Create(function(Container $c, $p=null) {
+$container->my_extension = Provider::Create(function(Container $c, $s=null) {
 	// checking whether if extending a service or not:
-	if ($p === null) return new Service(); // returning a simple service rather than extending it
+	if ($s === null) return new Service(); // returning a simple service rather than extending it
 
 	// ...using of parent container
 	$foo = $c['foo'] + 1;
 	// ...using of parent service
-	$p->setFoo($foo);
-	return $p; // returns the extended service
+	$s->setFoo($foo);
+	return $s; // returns the extended service
 })->share();
 ...
 $extendedProvider = $container['my_service']->extend($container['my_extension']);
